@@ -1,0 +1,14 @@
+import { Provider } from 'jotai'
+import { GlobalStateDevTools } from '~/core/configurations'
+
+export function GlobalStateProvider(props) {
+	const { children, ...rest } = props
+	return (
+		<Provider {...rest}>
+			<GlobalStateDevTools />
+			{children}
+		</Provider>
+	)
+}
+
+export default GlobalStateProvider
