@@ -6,7 +6,8 @@
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
-		"tauri": "vite tauri"
+		"vite-tauri": "vite tauri",
+		"tauri": "tauri"
 	},
 	"dependencies": {
 		"@mantine/core": "^4.2.7",
