@@ -6,7 +6,6 @@ import dynamicImport from 'vite-plugin-dynamic-import'
 import mockPlugin from 'vite-plugin-file-mock'
 import imagePresets, { widthPreset } from 'vite-plugin-image-presets'
 import mkcert from 'vite-plugin-mkcert'
-import mockServer from 'vite-plugin-mock-server'
 import removeConsole from 'vite-plugin-remove-console'
 import svgr from 'vite-plugin-svgr'
 import { ViteTips } from 'vite-plugin-tips'
@@ -15,6 +14,7 @@ import react from 'vite-preset-react'
 import jsconfigPaths from 'vite-tsconfig-paths'
 import jotaiDebugLabel from 'jotai/babel/plugin-debug-label'
 import jotaiReactRefresh from 'jotai/babel/plugin-react-refresh'
+import eslintPlugin from '@nabla/vite-plugin-eslint'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -56,12 +56,15 @@ export default defineConfig({
 		}),
 		// vitePluginCssModules(),
 		mkcert(),
-		mockServer({
-			logLevel: 'error',
-		}),
 		ViteTips(),
 		removeConsole(),
 		mockPlugin(),
 		svgr(),
+		eslintPlugin({
+			eslintOptions: {
+				fix: true,
+				cache: false,
+			},
+		}),
 	],
 })

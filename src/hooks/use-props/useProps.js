@@ -19,10 +19,8 @@ function mergeProps(params = initialParams) {
 	if (!props) return defaultProps
 	if (!defaultProps) return props
 
-	let result = {}
-
 	try {
-		result = Object.keys(defaultProps).reduce((mergedProps, key) => {
+		const result = Object.keys(defaultProps).reduce((mergedProps, key) => {
 			if (props[key]) {
 				mergedProps[key] = mergeProps(props[key], defaultProps[key])
 			} else {
@@ -30,9 +28,8 @@ function mergeProps(params = initialParams) {
 			}
 			return mergedProps
 		}, {})
-	} catch (err) {
-		result = { ...defaultProps, error: err }
-	} finally {
 		return result
+	} catch (err) {
+		return { ...defaultProps, error: err }
 	}
 }

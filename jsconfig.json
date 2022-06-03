@@ -1,6 +1,8 @@
 {
 	"compilerOptions": {
-		"resolveJsonModule": true,
+		"alwaysStrict": true,
+		"strict": true,
+		"strictNullChecks": true,
 		"baseUrl": "src",
 		"paths": {
 			"~/*": ["*"]
