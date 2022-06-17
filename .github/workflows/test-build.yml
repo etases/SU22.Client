@@ -3,6 +3,8 @@ name: "Test build"
 on:
   workflow_dispatch:
   pull_request:
+    branches-ignore:
+      - main
   push:
     branches:
       - main
@@ -36,6 +38,9 @@ jobs:
 
       - name: install app dependencies and build it
         run: yarn && yarn build
+
+      - name: update cargo
+        run: cd src-tauri && cargo update && cd ..
 
       - uses: tauri-apps/tauri-action@v0
         env:
