@@ -45,8 +45,8 @@ jobs:
       
       - name: build for OSX and Linux
         if: matrix.platform != 'windows-latest'
-        run: CI=true yarn tauri build
+        run: CI=true yarn tauri build --verbose
       
       - name: build for Windows
         if: matrix.platform == 'windows-latest'
-        run: $Env:CI=true yarn tauri build
+        run: yarn tauri build --verbose

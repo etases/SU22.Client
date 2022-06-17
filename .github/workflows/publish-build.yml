@@ -49,8 +49,13 @@ jobs:
       #     releaseDraft: true
       #     prerelease: false
 
-      - name: build
-        run: yarn tauri build
+      - name: build for OSX and Linux
+        if: matrix.platform != 'windows-latest'
+        run: CI=true yarn tauri build --verbose
+      
+      - name: build for Windows
+        if: matrix.platform == 'windows-latest'
+        run: yarn tauri build --verbose
 
       - name: Upload results
         if: success()
