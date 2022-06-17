@@ -39,14 +39,14 @@ jobs:
       - name: update cargo
         run: cd src-tauri && cargo update && cd ..
 
-      # - uses: tauri-apps/tauri-action@v0
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: build for OSX and Linux
-        if: matrix.platform != 'windows-latest'
-        run: CI=true yarn tauri build --verbose
+      # - name: build for OSX and Linux
+      #   if: matrix.platform != 'windows-latest'
+      #   run: CI=true yarn tauri build --verbose
       
-      - name: build for Windows
-        if: matrix.platform == 'windows-latest'
-        run: yarn tauri build --verbose
+      # - name: build for Windows
+      #   if: matrix.platform == 'windows-latest'
+      #   run: yarn tauri build --verbose

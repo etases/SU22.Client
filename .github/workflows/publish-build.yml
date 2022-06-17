@@ -39,27 +39,27 @@ jobs:
       - name: update cargo
         run: cd src-tauri && cargo update && cd ..
 
-      # - uses: tauri-apps/tauri-action@v0
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-      #     releaseName: "App v__VERSION__"
-      #     releaseBody: "See the assets to download this version and install."
-      #     releaseDraft: true
-      #     prerelease: false
-
-      - name: build for OSX and Linux
-        if: matrix.platform != 'windows-latest'
-        run: CI=true yarn tauri build --verbose
-      
-      - name: build for Windows
-        if: matrix.platform == 'windows-latest'
-        run: yarn tauri build --verbose
-
-      - name: Upload results
-        if: success()
-        uses: actions/upload-artifact@v2
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: Build-v__VERSION__-${{ matrix.platform }}
-          path: src-tauri/target/release/bundle/*
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: "App v__VERSION__"
+          releaseBody: "See the assets to download this version and install."
+          releaseDraft: true
+          prerelease: false
+
+      # - name: build for OSX and Linux
+      #   if: matrix.platform != 'windows-latest'
+      #   run: CI=true yarn tauri build --verbose
+      
+      # - name: build for Windows
+      #   if: matrix.platform == 'windows-latest'
+      #   run: yarn tauri build --verbose
+
+      # - name: Upload results
+      #   if: success()
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: Build-v__VERSION__-${{ matrix.platform }}
+      #     path: src-tauri/target/release/bundle/*
