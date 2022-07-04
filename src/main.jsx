@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom/client'
 import '~/core/configurations/i18next'
 
 // components
-import { NormalLayout as Layout } from '~/core/components'
+import { Router } from '~/router'
 
 // css
 import '~/core/styles/index.scss'
@@ -17,6 +17,6 @@ import 'virtual:windi-devtools'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>
-		<Layout />
+			<Router />
 	</React.StrictMode>
 )

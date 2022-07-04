@@ -1,23 +1,30 @@
 {
-	"useTabs": true,
-	"tabWidth": 4,
-	"trailingComma": "es5",
-	"arrowParens": "always",
-	"bracketSpacing": true,
-	"printWidth": 80,
-	"semi": false,
-	"singleQuote": true,
-	"proseWrap": "always",
-	"overrides": [
-		{
-			"files": "*.jsx",
-			"options": {
-				"tabWidth": 2,
-				"bracketSameLine": true,
-				"htmlWhitespaceSensitivity": "strict",
-				"jsxSingleQuote": false,
-				"singleAttributePerLine": true
-			}
-		}
-	]
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "htmlWhitespaceSensitivity": "strict",
+    "overrides": [
+        {
+            "files": "*.jsx",
+            "options": {
+                "bracketSameLine": true,
+                "htmlWhitespaceSensitivity": "strict",
+                "jsxSingleQuote": false,
+                "singleAttributePerLine": true,
+                "tabWidth": 2
+            }
+        },
+        {
+            "files": "*.json",
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ],
+    "printWidth": 80,
+    "proseWrap": "always",
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 4,
+    "trailingComma": "es5",
+    "useTabs": false
 }
