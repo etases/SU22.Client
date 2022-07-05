@@ -3,7 +3,7 @@ import { Link, Outlet, useParams } from 'react-router-dom'
 
 const { Col } = Grid
 
-function CategoryElement(elementProps) {
+function TopicComponent(elementProps) {
 	return (
 		<UnstyledButton component={Link} to={'./' + elementProps.id}>
 			<div style={{
@@ -28,9 +28,9 @@ export function Category() {
 		<Grid grow={true}>
 			<Col style={{ outline: '1px solid black' }} span={2}>
 				<Stack spacing="xs">
-					<CategoryElement id={12345} />
-					<CategoryElement id={2468} />
-					<CategoryElement id={1111} />
+					<TopicComponent id={12345} />
+					<TopicComponent id={2468} />
+					<TopicComponent id={1111} />
 				</Stack>
 			</Col>
 			<Col style={{ outline: '1px solid red' }} span={8}>
