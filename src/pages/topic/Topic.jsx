@@ -7,20 +7,16 @@ export function Topic() {
 	return (
 		<Stack spacing={10}>
 			{/* Header */}
-			<Group position={'apart'} style={{
-				padding: "8px",
-				border: `1px solid black`,
-				borderRadius: "4px"
-			}}>
-				<Text weight={500}>User ABC asked: </Text>
-				<Button variant={'subtle'}>Back to Parent</Button>
-			</Group>
 
 			{/* Topic / Parent Comment */}
 			<Stack spacing={10} style={{
 				border: `1px solid black`,
 				borderRadius: "4px"
 			}}>
+				<Group position={'apart'} style={{ padding: "8px" }}>
+					<Text weight={500}>User ABC asked: </Text>
+					<Button variant={'subtle'}>Back to Parent</Button>
+				</Group>
 				<Paper p="lg">
 					<Text>Paper is the most basic ui component</Text>
 					<Text>
