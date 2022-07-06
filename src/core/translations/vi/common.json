@@ -1,3 +1,8 @@
 {
-	"hello": "Xin chào {name}"
+	"hello": "Xin chào {name}",
+	"topic": {
+		"user_asked": "Người dùng {name} hỏi",
+		"user_said": "Người dùng {name} nói",
+		"back_to_parent": "Trở về chủ đề cha"
+	}
 }

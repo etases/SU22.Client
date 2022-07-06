@@ -1,3 +1,8 @@
 {
-    "hello": "Hi {name}"
+    "hello": "Hi {name}",
+    "topic": {
+        "user_asked": "User {name} asked",
+        "user_said": "User {name} said",
+        "back_to_parent": "Back to parent"
+    }
 }
