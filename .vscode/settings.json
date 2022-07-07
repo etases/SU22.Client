@@ -1,8 +1,13 @@
 {
-	"i18n-ally.autoDetection": true,
-	"i18n-ally.includeSubfolders": true,
-	"i18n-ally.localesPaths": ["src/core/translations"],
-	"[javascriptreact]": {
-		"editor.tabSize": 2
-	}
+  "i18n-ally.autoDetection": true,
+  "i18n-ally.includeSubfolders": true,
+  "i18n-ally.localesPaths": ["src/core/translations"],
+  "[javascriptreact]": {
+    "editor.tabSize": 2
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "git.branchProtection": ["master", "main"]
 }
