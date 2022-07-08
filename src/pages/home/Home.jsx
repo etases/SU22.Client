@@ -1,24 +1,77 @@
-import { Grid, Title } from '@mantine/core'
-import { useQuery } from 'react-query'
-import { fetchApi } from '~/hooks'
+import { Button, Card, Grid, Input, Pagination, Title } from '@mantine/core'
+import { useState } from 'react'
+import { useHomeQuery, useUpdatePost } from '~/hooks'
+
+const { Col } = Grid
 
 export function Home() {
-  const { data, isLoading, fetchStatus } = useQuery(['home'], {
-    queryFn: async () =>
-      fetchApi({
-        endpoint: 'metadata/settings',
-      }),
-    onSuccess: (data) => {
-      console.log('response', data)
-    },
+  const [currentPage, setCurrentPage] = useState(1)
+  const [form, setForm] = useState({
+    title: '',
+    postId: -1,
+  })
+  const { data, isLoading } = useHomeQuery({
+    currentPage,
+  })
+
+  const { mutate } = useUpdatePost({
+    currentPage,
   })
 
   return (
     <Grid>
-      <Title order={1}>Home</Title>
-      <Title order={1}>
-        {isLoading ? 'Loading...' : data.request?.originalUrl}
-      </Title>
+      <Col span={12}>
+        <Input
+          value={form.postId}
+          onChange={({ target }) => {
+            setForm((prevData) => ({
+              ...prevData,
+              postId: target.value,
+            }))
+          }}
+          placeholder="Post ID"
+        />
+        <Input
+          placeholder="Post title"
+          value={form.title}
+          onChange={({ target }) => {
+            setForm((prevData) => ({
+              ...prevData,
+              title: target.value,
+            }))
+          }}
+        />
+        <Button
+          onClick={() =>
+            mutate({
+              id: form.postId,
+              body: { title: form.title },
+            })
+          }>
+          Update
+        </Button>
+      </Col>
+      <Col span={12}>
+        {data.map((item) => (
+          <Card key={item.id}>
+            <Grid>
+              <Col span={4}>
+                <Title>{item.id}</Title>
+              </Col>
+              <Col span={8}>
+                <Title>{item.title}</Title>
+              </Col>
+            </Grid>
+          </Card>
+        ))}
+      </Col>
+      <Col span={12}>
+        <Pagination
+          total={10}
+          page={currentPage}
+          onChange={setCurrentPage}
+        />
+      </Col>
     </Grid>
   )
 }
