@@ -1,5 +1,5 @@
 import { NormalLayout } from '~/core/components'
-import { Category, Home, Topic } from '~/pages'
+import { Category, Home, SignIn, SignUp, Topic } from '~/pages'
 // import { App } from '~/pages'
 
 export const routes = [
@@ -23,11 +23,11 @@ export const routes = [
       },
       {
         path: 'sign-in',
-        element: 'sign-in page',
+        element: <SignIn />,
       },
       {
         path: 'sign-up',
-        element: 'sign-up page',
+        element: <SignUp />,
       },
     ],
   },
