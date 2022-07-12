@@ -1,31 +1,47 @@
 import { Link, useParams } from 'react-router-dom'
 import { Button, Group, Paper, Stack, Text, TextInput, UnstyledButton} from '@mantine/core'
 import { useTranslation } from '~/hooks'
+import { useGetComment, useGetCommentsFromParent } from '~/hooks/use-query/use-comment'
 
 function Comment(commentProps) {
 	const saidMsgTranslation = useTranslation({
 		translationKey: 'topic.user_said',
 		keyParams: {
-			name: commentProps.name,
+			name: commentProps.account.username,
 		},
 	});
 	return (
 		<UnstyledButton component={Link} to={"../" + commentProps.id}>
 			<Text size='xs' color='gray'>{saidMsgTranslation.error || saidMsgTranslation.value}</Text>
-			<Text lineClamp={2}>
-				Lor ipsum dolor sit amet, consectetur adipiscing elit.
-				Lor ipsum dolor sit amet, consectetur adipiscing elit.
-			</Text>
+			<Text lineClamp={2}>{commentProps.content}</Text>
 		</UnstyledButton>
 	)
 }
 
+function Comments(commentsProps) {
+	const { data, isLoading } = useGetCommentsFromParent(commentsProps);
+	if (isLoading) {
+		return <Text>Loading...</Text>
+	} else {
+		return (
+			<Stack spacing='xs'>
+				{data.data.map(comment => (
+					<Comment key={comment.id} {...comment} />
+				))}
+			</Stack>
+		)
+	}
+}
+
 export function Topic() {
 	const { topic } = useParams();
+	const { data, isLoading } = useGetComment({
+		id: topic
+	});
 	const askedMsgTranslation = useTranslation({
 		translationKey: 'topic.user_asked',
 		keyParams: {
-			name: '123',
+			name: isLoading ? '...' : data.account.username,
 		},
 	});
 	const backParentTranslation = useTranslation({ translationKey: 'topic.back_to_parent' });
@@ -43,10 +59,7 @@ export function Topic() {
 					<Button variant={'subtle'}>{backParentTranslation.error || backParentTranslation.value}</Button>
 				</Group>
 				<Paper p="lg">
-					<Text>Paper is the most basic ui component</Text>
-					<Text>
-						This is the topic: {topic}
-					</Text>
+					<Text>{isLoading ? "Loading..." : data.content}</Text>
 				</Paper>
 				<Group position={'apart'} style={{ padding: "8px" }}>
 					<Text color="dimmed">Keyword</Text>
@@ -72,11 +85,9 @@ export function Topic() {
 				</Group>
 
 				{/* Show Comments */}
-				<Stack>
-					<Comment name={"Test1"} id={"123"}/>
-					<Comment name={"Test2"} id={"1234"}/>
-					<Comment name={"Test3"} id={"12356"}/>
-				</Stack>
+				{
+					isLoading ? <Text>Loading...</Text> : <Comments id={data.id} />
+				}
 			</Stack>
 		</Stack>
 	)
