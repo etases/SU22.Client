@@ -4,5 +4,21 @@
 		"user_asked": "Người dùng {name} hỏi",
 		"user_said": "Người dùng {name} nói",
 		"back_to_parent": "Trở về chủ đề cha"
+	},
+	"comment": {
+		"add_topic": "Thêm chủ đề",
+		"add_comment": "Thêm bình luận",
+		"update_content": "Cập nhật nội dung",
+		"content": "Nội dung",
+		"keyword": "Từ khóa",
+		"submit": "Gửi",
+		"content_required": "Nội dung không được để trống",
+		"keyword_required": "Từ khóa không được để trống"
+	},
+	"button": {
+		"add_topic": "Thêm chủ đề",
+		"add_comment": "Thêm bình luận",
+		"vote": "Bình chọn",
+		"update": "Cập nhật"
 	}
 }

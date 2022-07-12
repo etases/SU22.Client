@@ -8,21 +8,22 @@ import { useAddCommentModal } from '~/components/comment'
 const { Col } = Grid
 
 function TopicComponent(elementProps) {
-	const askedMsgTranslation = useTranslation({
-		translationKey: 'topic.user_asked',
-		keyParams: {
-			name: elementProps.account.username,
-		},
+	const translator = useTranslation({
+		getTranslatorOnly: true,
 	})
 	return (
 		<UnstyledButton component={Link} to={'./' + elementProps.id}>
 			<div style={{
-				paddingLeft: "2px",
-				backgroundColor: "#f5f5f5",
-				borderRadius: "4px",
-				border: "1px solid #eaeaea",
+				paddingLeft: '2px',
+				backgroundColor: '#f5f5f5',
+				borderRadius: '4px',
+				border: '1px solid #eaeaea',
 			}}>
-				<Text size='xs' color='gray'>{askedMsgTranslation.error || askedMsgTranslation.value}</Text>
+				<Text size='xs' color='gray'>{translator({
+					key: 'topic.user_asked', keyParams: {
+						name: elementProps.account.username,
+					},
+				})}</Text>
 				<Text lineClamp={2}>
 					{elementProps.content}
 				</Text>
@@ -33,6 +34,9 @@ function TopicComponent(elementProps) {
 
 function TopicsComponent(elementProps) {
 	const [currentPage, setCurrentPage] = useState(1)
+	const translator = useTranslation({
+		getTranslatorOnly: true,
+	})
 	const { data, isLoading } = useGetTopicsFromCategory({
 		categoryId: elementProps.categoryId,
 		page: currentPage,
@@ -45,14 +49,16 @@ function TopicsComponent(elementProps) {
 			<>
 				{addComponent}
 				<Stack spacing='xs'>
-					<Button fullWidth variant="outline" onClick={() => setOpened(true)}>
-						Add Topic
+					<Button fullWidth variant='outline' onClick={() => setOpened(true)}>
+						{translator({key: 'button.add_topic'})}
 					</Button>
-					{
-						data.data.map(topic => (
-							<TopicComponent key={topic.id} {...topic} />
-						))
-					}
+					<Stack spacing='xs'>
+						{
+							data.data.map(topic => (
+								<TopicComponent key={topic.id} {...topic} />
+							))
+						}
+					</Stack>
 					<Pagination
 						total={data.totalPage}
 						page={currentPage}

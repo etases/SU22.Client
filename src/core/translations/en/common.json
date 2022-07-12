@@ -4,5 +4,21 @@
         "user_asked": "User {name} asked",
         "user_said": "User {name} said",
         "back_to_parent": "Back to parent"
+    },
+    "comment": {
+        "add_topic": "Add Topic",
+        "add_comment": "Add Comment",
+        "update_content": "Update Content",
+        "content": "Content",
+        "keyword": "Keyword",
+        "submit": "Submit",
+        "content_required": "Content is required",
+        "keyword_required": "Keyword is required"
+    },
+    "button": {
+        "add_topic": "Add Topic",
+        "add_comment": "Add Comment",
+        "vote": "Vote",
+        "update": "Update"
     }
 }

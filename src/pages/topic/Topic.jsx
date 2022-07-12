@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { Button, Group, Paper, Stack, Text, TextInput, UnstyledButton} from '@mantine/core'
+import { Button, Group, Paper, Stack, Text, UnstyledButton } from '@mantine/core'
 import { useTranslation } from '~/hooks'
 import { useGetComment, useGetCommentsFromParent } from '~/hooks/use-query/use-comment'
 import { useAddCommentModal, useUpdateCommentModal } from '~/components/comment'
@@ -35,19 +35,16 @@ function Comments(commentsProps) {
 }
 
 export function Topic() {
-	const { category, topic } = useParams();
+	const { category, topic } = useParams()
 	const { data, isLoading } = useGetComment({
-		id: topic
-	});
-	const askedMsgTranslation = useTranslation({
-		translationKey: 'topic.user_asked',
-		keyParams: {
-			name: isLoading ? '...' : data.account.username,
-		},
-	});
-	const backParentTranslation = useTranslation({ translationKey: 'topic.back_to_parent' });
-	const { component : addComponent, setOpened : setOpenedAdd } = useAddCommentModal(category, topic);
-	const { component : updateComponent, setOpened : setOpenedUpdate } = useUpdateCommentModal(topic);
+		id: topic,
+	})
+
+	const translator = useTranslation({
+		getTranslatorOnly: true,
+	})
+	const { component: addComponent, setOpened: setOpenedAdd } = useAddCommentModal(category, topic)
+	const { component: updateComponent, setOpened: setOpenedUpdate } = useUpdateCommentModal(topic)
 	return (
 		<Stack spacing={10}>
 			{/* Header */}
@@ -56,23 +53,27 @@ export function Topic() {
 			{/* Topic / Parent Comment */}
 			<Stack spacing={10} style={{
 				border: `1px solid black`,
-				borderRadius: "4px"
+				borderRadius: '4px',
 			}}>
-				<Group position={'apart'} style={{ padding: "8px" }}>
-					<Text weight={500}>{askedMsgTranslation.error || askedMsgTranslation.value}</Text>
-					<Button variant={'subtle'}>{backParentTranslation.error || backParentTranslation.value}</Button>
+				<Group position={'apart'} style={{ padding: '8px' }}>
+					<Text weight={500}>{translator({
+						key: 'topic.user_asked', keyParams: {
+							name: isLoading ? '...' : data.account.username,
+						},
+					})}</Text>
+					<Button variant={'subtle'}>{translator({ key: 'topic.back_to_parent' })}</Button>
 				</Group>
-				<Paper p="lg">
-					<Text>{isLoading ? "Loading..." : data.content}</Text>
+				<Paper p='lg'>
+					<Text>{isLoading ? 'Loading...' : data.content}</Text>
 				</Paper>
-				<Group position={'apart'} style={{ padding: "8px" }}>
-					<Text color="dimmed">{isLoading ? "Keyword" : data.keyword}</Text>
+				<Group position={'apart'} style={{ padding: '8px' }}>
+					<Text color='dimmed'>{isLoading ? 'Keyword' : data.keyword}</Text>
 					<Group>
-						<Button radius="xl" size="xs" uppercase>
-							Vote
+						<Button radius='xl' size='xs' uppercase>
+							{translator({ key: 'button.vote' })}
 						</Button>
-						<Button radius="xl" size="xs" uppercase onClick={() => setOpenedUpdate(true)}>
-							Update
+						<Button radius='xl' size='xs' uppercase onClick={() => setOpenedUpdate(true)}>
+							{translator({ key: 'button.update' })}
 						</Button>
 					</Group>
 				</Group>
@@ -80,25 +81,19 @@ export function Topic() {
 
 			{/* Comments */}
 			<Stack style={{
-				padding: "8px",
+				padding: '8px',
 				border: `1px solid black`,
-				borderRadius: "4px"
+				borderRadius: '4px',
 			}}>
 				{addComponent}
 				{/* Add Comment */}
-				<Group grow={true} style={{
-					padding: "8px",
-					border: `1px solid black`,
-					borderRadius: "4px"
-				}}>
-					{
-						isLoading ? <></> : (
-							<Button fullWidth variant="outline" onClick={() => setOpenedAdd(true)}>
-								Add Comment
-							</Button>
-						)
-					}
-				</Group>
+				{
+					isLoading ? <></> : (
+						<Button fullWidth variant='outline' onClick={() => setOpenedAdd(true)}>
+							{translator({ key: 'button.add_comment' })}
+						</Button>
+					)
+				}
 
 				{/* Show Comments */}
 				{

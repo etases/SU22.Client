@@ -1,8 +1,12 @@
 import { useState } from 'react'
 import { Button, Group, Modal, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { useTranslation } from '~/hooks'
 
 export function useAddCommentModal(categoryId, parentId = null) {
+	const translator = useTranslation({
+		getTranslatorOnly: true,
+	})
 	const form = useForm({
 		initialValues: {
 			content: '',
@@ -10,8 +14,8 @@ export function useAddCommentModal(categoryId, parentId = null) {
 		},
 
 		validate: {
-			content: (value) => value.length > 0 ? null : 'Content is required',
-			keyword: (value) => value.length > 0 ? null : 'Keyword is required'
+			content: (value) => value.length > 0 ? null : translator({key: 'comment.content_required'}),
+			keyword: (value) => value.length > 0 ? null : translator({key: 'comment.keyword_required'})
 		},
 	});
 
@@ -21,24 +25,24 @@ export function useAddCommentModal(categoryId, parentId = null) {
 		<Modal
 			opened={opened}
 			onClose={() => setOpened(false)}
-			title={parentId == null ? "Add Topic" : "Add Comment"}
+			title={parentId == null ? translator({key: 'comment.add_topic'}) : translator({key: 'comment.add_comment'})}
 		>
 			<form onSubmit={form.onSubmit((values) => console.log(values))}>
 				<Textarea
 					required
-					label="Content"
+					label={translator({key: 'comment.content'})}
 					{...form.getInputProps('content')}
 				/>
 
 				<TextInput
 					required
-					label="Keyword"
+					label={translator({key: 'comment.keyword'})}
 					placeholder="abc,def,ghi"
 					{...form.getInputProps('keyword')}
 				/>
 
 				<Group position="right" mt="md">
-					<Button type="submit">Submit</Button>
+					<Button type="submit">{translator({key: 'comment.submit'})}</Button>
 				</Group>
 			</form>
 		</Modal>
@@ -51,6 +55,9 @@ export function useAddCommentModal(categoryId, parentId = null) {
 }
 
 export function useUpdateCommentModal(commentId) {
+	const translator = useTranslation({
+		getTranslatorOnly: true,
+	})
 	const form = useForm({
 		initialValues: {
 			content: '',
@@ -58,8 +65,8 @@ export function useUpdateCommentModal(commentId) {
 		},
 
 		validate: {
-			content: (value) => value.length > 0 ? null : 'Content is required',
-			keyword: (value) => value.length > 0 ? null : 'Keyword is required'
+			content: (value) => value.length > 0 ? null : translator({key: 'comment.content_required'}),
+			keyword: (value) => value.length > 0 ? null : translator({key: 'comment.keyword_required'})
 		},
 	});
 
@@ -69,24 +76,24 @@ export function useUpdateCommentModal(commentId) {
 		<Modal
 			opened={opened}
 			onClose={() => setOpened(false)}
-			title="Update Comment"
+			title={translator({key: 'comment.update_content'})}
 		>
 			<form onSubmit={form.onSubmit((values) => console.log(values))}>
 				<Textarea
 					required
-					label="Content"
+					label={translator({key: 'comment.content'})}
 					{...form.getInputProps('content')}
 				/>
 
 				<TextInput
 					required
-					label="Keyword"
+					label={translator({key: 'comment.keyword'})}
 					placeholder="abc,def,ghi"
 					{...form.getInputProps('keyword')}
 				/>
 
 				<Group position="right" mt="md">
-					<Button type="submit">Submit</Button>
+					<Button type="submit">{translator({key: 'comment.submit'})}</Button>
 				</Group>
 			</form>
 		</Modal>
