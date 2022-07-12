@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Button, Group, Paper, Stack, Text, TextInput, UnstyledButton} from '@mantine/core'
 import { useTranslation } from '~/hooks'
 import { useGetComment, useGetCommentsFromParent } from '~/hooks/use-query/use-comment'
+import { useAddCommentModal, useUpdateCommentModal } from '~/components/comment'
 
 function Comment(commentProps) {
 	const saidMsgTranslation = useTranslation({
@@ -34,7 +35,7 @@ function Comments(commentsProps) {
 }
 
 export function Topic() {
-	const { topic } = useParams();
+	const { category, topic } = useParams();
 	const { data, isLoading } = useGetComment({
 		id: topic
 	});
@@ -45,9 +46,12 @@ export function Topic() {
 		},
 	});
 	const backParentTranslation = useTranslation({ translationKey: 'topic.back_to_parent' });
+	const { component : addComponent, setOpened : setOpenedAdd } = useAddCommentModal(category, topic);
+	const { component : updateComponent, setOpened : setOpenedUpdate } = useUpdateCommentModal(topic);
 	return (
 		<Stack spacing={10}>
 			{/* Header */}
+			{updateComponent}
 
 			{/* Topic / Parent Comment */}
 			<Stack spacing={10} style={{
@@ -62,10 +66,15 @@ export function Topic() {
 					<Text>{isLoading ? "Loading..." : data.content}</Text>
 				</Paper>
 				<Group position={'apart'} style={{ padding: "8px" }}>
-					<Text color="dimmed">Keyword</Text>
-					<Button radius="xl" size="xs" uppercase>
-						??
-					</Button>
+					<Text color="dimmed">{isLoading ? "Keyword" : data.keyword}</Text>
+					<Group>
+						<Button radius="xl" size="xs" uppercase>
+							Vote
+						</Button>
+						<Button radius="xl" size="xs" uppercase onClick={() => setOpenedUpdate(true)}>
+							Update
+						</Button>
+					</Group>
 				</Group>
 			</Stack>
 
@@ -75,13 +84,20 @@ export function Topic() {
 				border: `1px solid black`,
 				borderRadius: "4px"
 			}}>
+				{addComponent}
 				{/* Add Comment */}
 				<Group grow={true} style={{
 					padding: "8px",
 					border: `1px solid black`,
 					borderRadius: "4px"
 				}}>
-					<TextInput label="Add Comment" placeholder="Add your comment here" />
+					{
+						isLoading ? <></> : (
+							<Button fullWidth variant="outline" onClick={() => setOpenedAdd(true)}>
+								Add Comment
+							</Button>
+						)
+					}
 				</Group>
 
 				{/* Show Comments */}

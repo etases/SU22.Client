@@ -1,8 +1,9 @@
-import { Grid, Pagination, Stack, Text, UnstyledButton } from '@mantine/core'
+import { Button, Grid, Pagination, Stack, Text, UnstyledButton } from '@mantine/core'
 import { Link, Outlet, useParams } from 'react-router-dom'
 import { useTranslation } from '~/hooks'
 import { useGetTopicsFromCategory } from '~/hooks/use-query/use-comment'
 import { useState } from 'react'
+import { useAddCommentModal } from '~/components/comment'
 
 const { Col } = Grid
 
@@ -36,22 +37,29 @@ function TopicsComponent(elementProps) {
 		categoryId: elementProps.categoryId,
 		page: currentPage,
 	});
+	const { component : addComponent, setOpened } = useAddCommentModal(elementProps.categoryId)
 	if (isLoading) {
 		return <Text>Loading...</Text>
 	} else {
 		return (
-			<Stack spacing='xs'>
-				{
-					data.data.map(topic => (
-						<TopicComponent key={topic.id} {...topic} />
-					))
-				}
-				<Pagination
-					total={data.totalPage}
-					page={currentPage}
-					onChange={setCurrentPage}
-				/>
-			</Stack>
+			<>
+				{addComponent}
+				<Stack spacing='xs'>
+					<Button fullWidth variant="outline" onClick={() => setOpened(true)}>
+						Add Topic
+					</Button>
+					{
+						data.data.map(topic => (
+							<TopicComponent key={topic.id} {...topic} />
+						))
+					}
+					<Pagination
+						total={data.totalPage}
+						page={currentPage}
+						onChange={setCurrentPage}
+					/>
+				</Stack>
+			</>
 		)
 	}
 }

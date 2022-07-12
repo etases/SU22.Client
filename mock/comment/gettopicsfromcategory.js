@@ -4,6 +4,7 @@ module.exports = (request) => {
 			{
 				id: 1,
 				content: 'This is a test comment',
+				keyword: 'test',
 				account: {
 					username: 'test'
 				}
@@ -11,6 +12,7 @@ module.exports = (request) => {
 			{
 				id: 2,
 				content: 'This is a test comment',
+				keyword: 'test',
 				account: {
 					username: 'test'
 				}
@@ -18,6 +20,7 @@ module.exports = (request) => {
 			{
 				id: 3,
 				content: 'This is a test comment',
+				keyword: 'test',
 				account: {
 					username: 'test'
 				}
