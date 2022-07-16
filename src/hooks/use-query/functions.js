@@ -35,9 +35,10 @@ export async function fetchApi(params) {
 }
 
 function toQueryString(query) {
+    let queryString = Object.keys(query)
+        .map((key) => `${key}=${query[key]}`)
+        .join('&') || '';
     return (
-        Object.keys(query)
-            .map((key) => `${key}=${query[key]}`)
-            .join('&') || ''
+        queryString.length > 0 ? `?${queryString}` : queryString
     )
 }
