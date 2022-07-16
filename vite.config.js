@@ -8,7 +8,7 @@ import jotaiReactRefresh from 'jotai/babel/plugin-react-refresh'
 import dynamicImport from 'vite-plugin-dynamic-import'
 import mockPlugin from 'vite-plugin-file-mock'
 import imagePresets, { widthPreset } from 'vite-plugin-image-presets'
-// import mkcert from 'vite-plugin-mkcert'
+import mkcert from 'vite-plugin-mkcert'
 import removeConsole from 'vite-plugin-remove-console'
 import svgr from 'vite-plugin-svgr'
 import { ViteTips } from 'vite-plugin-tips'
@@ -63,7 +63,7 @@ export default defineConfig({
 				},
 			}),
 		}),
-		// mkcert(),
+		mkcert(),
 		ViteTips(),
 		removeConsole(),
 		mockPlugin(),
