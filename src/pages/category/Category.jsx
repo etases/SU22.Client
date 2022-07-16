@@ -1,9 +1,16 @@
-import { Button, Grid, Pagination, Stack, Text, UnstyledButton } from '@mantine/core'
+import {
+	Button,
+	Grid,
+	Pagination,
+	Stack,
+	Text,
+	UnstyledButton,
+} from '@mantine/core'
+import { useState } from 'react'
 import { Link, Outlet, useParams } from 'react-router-dom'
+import { useAddCommentModal } from '~/components/comment'
 import { useTranslation } from '~/hooks'
 import { useGetTopicsFromCategory } from '~/hooks/use-query/use-comment'
-import { useState } from 'react'
-import { useAddCommentModal } from '~/components/comment'
 
 const { Col } = Grid
 
@@ -12,21 +19,27 @@ function TopicComponent(elementProps) {
 		getTranslatorOnly: true,
 	})
 	return (
-		<UnstyledButton component={Link} to={'./' + elementProps.id}>
-			<div style={{
-				paddingLeft: '2px',
-				backgroundColor: '#f5f5f5',
-				borderRadius: '4px',
-				border: '1px solid #eaeaea',
-			}}>
-				<Text size='xs' color='gray'>{translator({
-					key: 'topic.user_asked', keyParams: {
-						name: elementProps.account.username,
-					},
-				})}</Text>
-				<Text lineClamp={2}>
-					{elementProps.content}
+		<UnstyledButton
+			component={Link}
+			to={'./' + elementProps.id}>
+			<div
+				style={{
+					paddingLeft: '2px',
+					backgroundColor: '#f5f5f5',
+					borderRadius: '4px',
+					border: '1px solid #eaeaea',
+				}}>
+				<Text
+					size='xs'
+					color='gray'>
+					{translator({
+						key: 'topic.user_asked',
+						keyParams: {
+							name: elementProps.account.username,
+						},
+					})}
 				</Text>
+				<Text lineClamp={2}>{elementProps.content}</Text>
 			</div>
 		</UnstyledButton>
 	)
@@ -40,8 +53,10 @@ function TopicsComponent(elementProps) {
 	const { data, isLoading } = useGetTopicsFromCategory({
 		categoryId: elementProps.categoryId,
 		page: currentPage,
-	});
-	const { component : addComponent, setOpened } = useAddCommentModal(elementProps.categoryId)
+	})
+	const { component: addComponent, setOpened } = useAddCommentModal(
+		elementProps.categoryId
+	)
 	if (isLoading) {
 		return <Text>Loading...</Text>
 	} else {
@@ -49,15 +64,19 @@ function TopicsComponent(elementProps) {
 			<>
 				{addComponent}
 				<Stack spacing='xs'>
-					<Button fullWidth variant='outline' onClick={() => setOpened(true)}>
-						{translator({key: 'button.add_topic'})}
+					<Button
+						fullWidth
+						variant='outline'
+						onClick={() => setOpened(true)}>
+						{translator({ key: 'button.add_topic' })}
 					</Button>
 					<Stack spacing='xs'>
-						{
-							data.data.map(topic => (
-								<TopicComponent key={topic.id} {...topic} />
-							))
-						}
+						{data.data.map((topic) => (
+							<TopicComponent
+								key={topic.id}
+								{...topic}
+							/>
+						))}
 					</Stack>
 					<Pagination
 						total={data.totalPage}
@@ -74,10 +93,14 @@ export function Category() {
 	const { category } = useParams()
 	return (
 		<Grid grow={true}>
-			<Col style={{ outline: '1px solid black' }} span={2}>
+			<Col
+				// style={{ outline: '1px solid black' }}
+				span={2}>
 				<TopicsComponent categoryId={category} />
 			</Col>
-			<Col style={{ outline: '1px solid red' }} span={8}>
+			<Col
+				// style={{ outline: '1px solid red' }}
+				span={8}>
 				<Outlet />
 			</Col>
 		</Grid>

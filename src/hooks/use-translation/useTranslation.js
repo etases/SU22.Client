@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation as useI18nTranslation } from 'react-i18next'
 
-import { useProps } from '~/hooks'
+import { useGlobalState, useProps } from '~/hooks'
 
 const initialProps = {
 	nameSpace: 'en',
@@ -24,14 +24,19 @@ export function useTranslation(props = initialProps) {
 		initialProps,
 	})
 
+	const [languageStore] = useGlobalState({
+		store: 'language',
+	})
+
 	// use hooks
 	const { t: translate } = useI18nTranslation()
 
 	function translator({ key, defaultValue, keyParams }) {
 		if (typeof key !== 'string') return key
 		return translate(key, {
-			ns: nameSpace,
+			nameSpace,
 			defaultValue,
+			lng: languageStore.currentLanguage,
 			...keyParams,
 		})
 	}

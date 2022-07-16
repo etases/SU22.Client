@@ -2,7 +2,7 @@ import { useQuery } from 'react-query'
 import { fetchApi } from '~/hooks'
 
 export function useGetComment(props) {
-	const { id } = props;
+	const { id } = props
 	return useQuery({
 		queryKey: ['getComment', id],
 		queryFn: async () =>
@@ -10,11 +10,9 @@ export function useGetComment(props) {
 				method: 'GET',
 				endpoint: 'https://localhost:3000/comment/getcomment',
 				query: {
-					id: id
+					id: id,
 				},
 			}),
-		onSuccess: (data) => {
-			console.log('success', data)
-		},
-	});
+		onSuccess: (data) => {},
+	})
 }

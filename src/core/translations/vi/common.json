@@ -1,24 +1,38 @@
 {
-	"hello": "Xin chào {name}",
-	"topic": {
-		"user_asked": "Người dùng {name} hỏi",
-		"user_said": "Người dùng {name} nói",
-		"back_to_parent": "Trở về chủ đề cha"
-	},
-	"comment": {
-		"add_topic": "Thêm chủ đề",
-		"add_comment": "Thêm bình luận",
-		"update_content": "Cập nhật nội dung",
-		"content": "Nội dung",
-		"keyword": "Từ khóa",
-		"submit": "Gửi",
-		"content_required": "Nội dung không được để trống",
-		"keyword_required": "Từ khóa không được để trống"
+	"auth": {
+		"login": "Đăng nhập",
+		"logout": "Đăng xuất",
+		"register": "Đăng ký"
 	},
 	"button": {
-		"add_topic": "Thêm chủ đề",
 		"add_comment": "Thêm bình luận",
-		"vote": "Bình chọn",
-		"update": "Cập nhật"
+		"add_topic": "Thêm chủ đề",
+		"update": "Cập nhật",
+		"vote": "Bình chọn"
+	},
+	"comment": {
+		"add_comment": "Thêm bình luận",
+		"add_topic": "Thêm chủ đề",
+		"content": "Nội dung",
+		"content_required": "Nội dung không được để trống",
+		"keyword": "Từ khóa",
+		"keyword_required": "Từ khóa không được để trống",
+		"submit": "Gửi",
+		"update_content": "Cập nhật nội dung"
+	},
+	"hello": "Xin chào {name}",
+	"home_page": {
+		"description": "Trang chủ",
+		"title": "Trang chủ"
+	},
+	"language": {
+		"change_message": "You have changed the language to {language}",
+		"en": "English",
+		"vi": "Tiếng Việt"
+	},
+	"topic": {
+		"back_to_parent": "Trở về chủ đề cha",
+		"user_asked": "Người dùng {name} hỏi",
+		"user_said": "Người dùng {name} nói"
 	}
 }
