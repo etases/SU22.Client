@@ -30,9 +30,9 @@ export function NormalLayout(props) {
 
 	return (
 		<AppShell
-			padding={'md'}
 			header={
 				<Header
+					fixed={true}
 					height={50}
 					p={'md'}>
 					{/* Header content */}
@@ -86,18 +86,22 @@ export function NormalLayout(props) {
 			}
 			styles={(theme) => ({
 				root: {
-					flexGrow: 1,
+					height: '100%',
 				},
 				body: {
-					height: 'calc(100% - 50px)',
+					height: '100%',
+				},
+				main: {
+					padding: '125px 230px 100px',
+					height: '100%',
 				},
 			})}>
 			{/* Your application here */}
 			<Outlet />
 			<Affix
 				position={{
-					bottom: 16,
-					right: 16,
+					bottom: '1rem',
+					right: '1rem',
 				}}>
 				<SegmentedControl
 					size={'xs'}

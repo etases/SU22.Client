@@ -1,5 +1,6 @@
 import {
 	Button,
+	Center,
 	Grid,
 	Pagination,
 	Stack,
@@ -63,26 +64,35 @@ function TopicsComponent(elementProps) {
 		return (
 			<>
 				{addComponent}
-				<Stack spacing='xs'>
-					<Button
-						fullWidth
-						variant='outline'
-						onClick={() => setOpened(true)}>
-						{translator({ key: 'button.add_topic' })}
-					</Button>
-					<Stack spacing='xs'>
-						{data.data.map((topic) => (
-							<TopicComponent
-								key={topic.id}
-								{...topic}
-							/>
-						))}
+				<Stack
+					spacing='xs'
+					style={{
+						height: '100%',
+						justifyContent: 'space-between',
+					}}>
+					<Stack>
+						<Button
+							fullWidth
+							variant='outline'
+							onClick={() => setOpened(true)}>
+							{translator({ key: 'button.add_topic' })}
+						</Button>
+						<Stack spacing='xs'>
+							{data.data.map((topic) => (
+								<TopicComponent
+									key={topic.id}
+									{...topic}
+								/>
+							))}
+						</Stack>
 					</Stack>
-					<Pagination
-						total={data.totalPage}
-						page={currentPage}
-						onChange={setCurrentPage}
-					/>
+					<Center>
+						<Pagination
+							total={data.totalPage}
+							page={currentPage}
+							onChange={setCurrentPage}
+						/>
+					</Center>
 				</Stack>
 			</>
 		)
@@ -92,15 +102,21 @@ function TopicsComponent(elementProps) {
 export function Category() {
 	const { category } = useParams()
 	return (
-		<Grid grow={true}>
+		<Grid
+			grow={true}
+			columns={10}
+			style={{
+				height: '100%',
+				overflow: 'auto',
+			}}>
 			<Col
-				// style={{ outline: '1px solid black' }}
-				span={2}>
+				span={3}
+				style={{ height: '100%' }}>
 				<TopicsComponent categoryId={category} />
 			</Col>
 			<Col
-				// style={{ outline: '1px solid red' }}
-				span={8}>
+				span={7}
+				style={{ height: '100%', overflow: 'auto' }}>
 				<Outlet />
 			</Col>
 		</Grid>
