@@ -8,7 +8,7 @@
             "options": {
                 "bracketSameLine": true,
                 "htmlWhitespaceSensitivity": "strict",
-                "jsxSingleQuote": false,
+                "jsxSingleQuote": true,
                 "singleAttributePerLine": true,
                 "tabWidth": 2
             }
