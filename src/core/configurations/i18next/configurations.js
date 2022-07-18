@@ -7,10 +7,13 @@ import resources from '~/core/translations'
 
 export const i18n = i18next.use(initReactI18next).init({
 	resources,
-	lng: 'en',
+	fallbackLng: 'en',
+	fallbackNS: 'common',
+	supportedLngs: ['en', 'vi'],
 	interpolation: {
 		prefix: '{',
 		suffix: '}',
+		skipOnVariables: false,
 	},
 })
 

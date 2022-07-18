@@ -1,8 +1,38 @@
 {
-    "hello": "Hi {name}",
-    "topic": {
-        "user_asked": "User {name} asked",
-        "user_said": "User {name} said",
-        "back_to_parent": "Back to parent"
-    }
+	"auth": {
+		"login": "Sign in",
+		"logout": "Sign out",
+		"register": "Sign up"
+	},
+	"button": {
+		"add_comment": "Add Comment",
+		"add_topic": "Add Topic",
+		"update": "Update",
+		"vote": "Vote"
+	},
+	"comment": {
+		"add_comment": "Add Comment",
+		"add_topic": "Add Topic",
+		"content": "Content",
+		"content_required": "Content is required",
+		"keyword": "Keyword",
+		"keyword_required": "Keyword is required",
+		"submit": "Submit",
+		"update_content": "Update Content"
+	},
+	"hello": "Hi {name}",
+	"home_page": {
+		"description": "This is the home page",
+		"title": "Home Page"
+	},
+	"language": {
+		"change_message": "Bạn đã thay đổi ngôn ngữ sang {language}",
+		"en": "English",
+		"vi": "Tiếng Việt"
+	},
+	"topic": {
+		"back_to_parent": "Back to parent",
+		"user_asked": "User {name} asked",
+		"user_said": "User {name} said"
+	}
 }

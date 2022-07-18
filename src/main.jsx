@@ -7,9 +7,11 @@ import '~/core/configurations/i18next'
 
 // components
 import {
-  GlobalStateProvider,
-  QueryProvider,
-  ThemeProvider,
+	GlobalStateProvider,
+	NotificationProvider,
+	QueryProvider,
+	SpotlightProvider,
+	ThemeProvider,
 } from '~/core/configurations'
 import { Router } from '~/router'
 
@@ -21,13 +23,17 @@ import 'virtual:windi-devtools'
 import 'virtual:windi.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <GlobalStateProvider>
-      <QueryProvider>
-        <ThemeProvider>
-          <Router />
-        </ThemeProvider>
-      </QueryProvider>
-    </GlobalStateProvider>
-  </React.StrictMode>
+	<React.StrictMode>
+		<GlobalStateProvider>
+			<QueryProvider>
+				<ThemeProvider>
+					<SpotlightProvider>
+						<NotificationProvider>
+							<Router />
+						</NotificationProvider>
+					</SpotlightProvider>
+				</ThemeProvider>
+			</QueryProvider>
+		</GlobalStateProvider>
+	</React.StrictMode>
 )
