@@ -9,6 +9,8 @@ function SearchButton(props) {
 		keywordResult,
 		setSelectedCategory,
 		selectedCategory,
+		setSelectedKeyword,
+		selectedKeyword,
 		getTopicList,
 	} = useSearchBarQuery()
 
@@ -27,7 +29,7 @@ function SearchButton(props) {
 	if (categoryResult.isFetching) {
 		return <div>Loading...</div>
 	}
-	console.log(getTopicList.data)
+
 	return (
 		// <Grid>
 		//   <Grid.Col span={1}>
@@ -39,7 +41,7 @@ function SearchButton(props) {
 		//       {/* <i className="fas fa-plus"></i> */}
 		//     </Button>
 		//   </Grid.Col>
-		<>
+		<div>
 			<Grid>
 				{/* <Grid.Col span={12}> */}
 				{/* <form
@@ -55,6 +57,7 @@ function SearchButton(props) {
 						variant='filled'
 						radius='md'
 						searchable
+						clearable
 						nothingFound='What?'
 						// value={selectedCategory}
 						// {...form.getInputProps('categoryId')}
@@ -68,8 +71,10 @@ function SearchButton(props) {
 						radius='md'
 						data={keywordResult?.data || []}
 						searchable
+						clearable
 						nothingFound='What?'
 						// {...form.getInputProps('keyword')}
+						onChange={(value) => setSelectedKeyword(value)}
 					/>
 				</Grid.Col>
 				<Grid.Col span={0}>
@@ -83,16 +88,33 @@ function SearchButton(props) {
 				{/* </Grid.Col> */}
 			</Grid>
 			<SimpleGrid cols={2}>
-				{categoryResult.data?.map((cat, index) => (
-					<CategoryList
-						key={index}
-						label={cat.label}
-						index={index}
-						colorList={colorList[index]}
-					/>
-				))}
+				{selectedCategory
+					? categoryResult.data
+							.filter((c) => c.value === selectedCategory)
+							.map((cat, index) => (
+								<CategoryList
+									key={index}
+									label={cat.label}
+									index={index}
+									colorList={colorList[index]}
+									questionDetail={getTopicList.data?.data
+										.filter((c) => c.categoryId === cat.value)
+										.map((c) => c.content)}
+								/>
+							))
+					: categoryResult.data?.map((cat, index) => (
+							<CategoryList
+								key={index}
+								label={cat.label}
+								index={index}
+								colorList={colorList[index]}
+								questionDetail={getTopicList.data?.data
+									.filter((c) => c.categoryId === cat.value)
+									.map((c) => c.content)}
+							/>
+					  ))}
 			</SimpleGrid>
-		</>
+		</div>
 	)
 }
 

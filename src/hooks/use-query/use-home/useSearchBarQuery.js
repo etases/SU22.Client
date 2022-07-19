@@ -12,7 +12,7 @@ const initialData = (noOfItems) =>
 export function useSearchBarQuery() {
 	const [selectedCategory, setSelectedCategory] = useState(null)
 	const [isCategoryFetch, setIsCategoryFetch] = useState(false)
-
+	const [selectedKeyword, setSelectedKeyword] = useState('')
 	const categoryResult = useQuery({
 		queryKey: ['category'],
 		queryFn: async () =>
@@ -35,10 +35,10 @@ export function useSearchBarQuery() {
 			// console.log('error search', err)
 		},
 		onSuccess: (data) => {
-			console.log('categoryList', data)
+			// console.log('categoryList', data)
 		},
 		refetchOnWindowFocus: false,
-		refetchOnMount: false,
+		// refetchOnMount: false,
 	})
 
 	const keywordResult = useQuery({
@@ -58,12 +58,11 @@ export function useSearchBarQuery() {
 			const response = list?.map((item) => ({
 				value: item,
 				label: item,
-				// categoryNote: item.categoryNote,
 			}))
 			return response
 		},
 		onSuccess: (data) => {
-			console.log('keywordList', data)
+			// console.log('keywordList', data)
 		},
 		refetchOnWindowFocus: false,
 	})
@@ -75,7 +74,14 @@ export function useSearchBarQuery() {
 				method: 'GET',
 				endpoint: 'https://localhost:7226/Comment/Filtered',
 				query: {
-					categoryId: selectedCategory,
+					categoryId:
+						selectedCategory === null || selectedCategory === ''
+							? ''
+							: selectedCategory,
+					keyword:
+						selectedKeyword === '' || selectedKeyword === null
+							? ''
+							: selectedKeyword,
 					PageSize: 5,
 				},
 			}),
@@ -85,13 +91,17 @@ export function useSearchBarQuery() {
 		if (selectedCategory !== null) {
 			keywordResult.refetch()
 		}
-	}, [selectedCategory, keywordResult])
+
+		getTopicList.refetch()
+	}, [selectedCategory, keywordResult, getTopicList, selectedKeyword])
 
 	return {
 		categoryResult,
 		keywordResult,
 		setSelectedCategory,
 		selectedCategory,
+		setSelectedKeyword,
+		selectedKeyword,
 		getTopicList,
 	}
 }

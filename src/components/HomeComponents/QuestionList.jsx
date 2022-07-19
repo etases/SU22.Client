@@ -1,6 +1,6 @@
-export default function QuestionList(catId) {
-	const { question } = catId
-
+export default function QuestionList(question) {
+	const { detail } = question
+	const mapList = detail?.map((q, index) => <div key={index}>{q}</div>)
 	return (
 		<div
 			style={{
@@ -10,7 +10,7 @@ export default function QuestionList(catId) {
 				marginTop: 4,
 				padding: 10,
 			}}>
-			{question}
+			{mapList}
 		</div>
 	)
 }

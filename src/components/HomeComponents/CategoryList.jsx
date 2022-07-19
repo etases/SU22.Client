@@ -1,13 +1,15 @@
 // import QuestionList from './QuestionList'
 
-export default function CategoryList(category) {
-	const { label, colorList } = category
+import QuestionList from './QuestionList'
 
+export default function CategoryList(category) {
+	const { label, colorList, questionDetail } = category
 	// console.log('catList', data)
+
 	return (
 		<div
 			style={{
-				width: 400,
+				width: 380,
 				height: 200,
 				backgroundColor: colorList,
 				borderRadius: 10,
@@ -15,7 +17,7 @@ export default function CategoryList(category) {
 			}}>
 			{label}
 
-			{/* <QuestionList catId={cat.value} /> */}
+			<QuestionList detail={questionDetail} />
 		</div>
 	)
 }
