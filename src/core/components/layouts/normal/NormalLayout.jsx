@@ -22,6 +22,10 @@ export function NormalLayout(props) {
 		store: 'language',
 	})
 
+	const [account, setAccount] = useGlobalState({
+		store: 'account',
+	})
+
 	const { category, topic } = useParams()
 
 	const translate = useTranslation({
@@ -62,22 +66,40 @@ export function NormalLayout(props) {
 						<Col span={4}>
 							<Group position={'right'}>
 								<Breadcrumbs separator={''}>
-									<Anchor
-										component={Link}
-										to='sign-in'
-										size='md'>
-										{translate({
-											key: 'auth.login',
-										})}
-									</Anchor>
-									<Anchor
-										component={Link}
-										to='sign-up'
-										size='md'>
-										{translate({
-											key: 'auth.register',
-										})}
-									</Anchor>
+									{account.token && (
+										<Anchor
+											component={Link}
+											to={''}
+											size={'md'}
+											onClick={() => {
+												setAccount((prev) => ({ ...prev, token: null }))
+												localStorage.removeItem('token')
+											}}>
+											{translate({
+												key: 'auth.logout',
+											})}
+										</Anchor>
+									)}
+									{!account.token && (
+										<Anchor
+											component={Link}
+											to='sign-in'
+											size='md'>
+											{translate({
+												key: 'auth.login',
+											})}
+										</Anchor>
+									)}
+									{!account.token && (
+										<Anchor
+											component={Link}
+											to='sign-up'
+											size='md'>
+											{translate({
+												key: 'auth.register',
+											})}
+										</Anchor>
+									)}
 								</Breadcrumbs>
 							</Group>
 						</Col>

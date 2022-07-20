@@ -5,14 +5,12 @@ export function useGetComment(props) {
 	const { id } = props
 	return useQuery({
 		queryKey: ['getComment', id],
-		queryFn: async () =>
+		queryFn: async ({ queryKey }) =>
 			fetchApi({
-				method: 'GET',
-				endpoint: 'https://localhost:3000/comment/getcomment',
-				query: {
-					id: id,
-				},
+				endpoint: '/comment/' + queryKey[1],
 			}),
-		onSuccess: (data) => {},
+		onSuccess: (data) => {
+			console.log('useGetComment', data)
+		},
 	})
 }

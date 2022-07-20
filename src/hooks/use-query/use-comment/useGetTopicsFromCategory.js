@@ -8,8 +8,12 @@ export function useGetTopicsFromCategory(props) {
 		queryFn: async () =>
 			fetchApi({
 				method: 'GET',
-				endpoint:
-					'https://localhost:3000/comment/gettopicsfromcategory',
+				baseUrl: {
+					protocol: 'https://',
+					host: 'localhost',
+					port: ':3000',
+				},
+				endpoint: '/comment/gettopicsfromcategory',
 				query: {
 					id: categoryId,
 					pageNumber: page,
