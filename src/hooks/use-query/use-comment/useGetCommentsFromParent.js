@@ -8,8 +8,12 @@ export function useGetCommentsFromParent(props) {
 		queryFn: async () =>
 			fetchApi({
 				method: 'GET',
-				endpoint:
-					'https://localhost:3000/comment/getcommentsfromparent',
+				baseUrl: {
+					protocol: 'https://',
+					host: 'localhost',
+					port: ':3000',
+				},
+				endpoint: '/comment/getcommentsfromparent',
 				query: {
 					id,
 				},

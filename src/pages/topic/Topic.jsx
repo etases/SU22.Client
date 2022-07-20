@@ -6,7 +6,7 @@ import {
 	Text,
 	UnstyledButton,
 } from '@mantine/core'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useAddCommentModal, useUpdateCommentModal } from '~/components/comment'
 import { useTranslation } from '~/hooks'
 import {
@@ -21,6 +21,9 @@ function Comment(commentProps) {
 			name: commentProps.account.username,
 		},
 	})
+
+	const [searchParams, setSearchParams] = useSearchParams()
+
 	return (
 		<UnstyledButton
 			component={Link}
