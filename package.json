@@ -19,6 +19,7 @@
 		"@mantine/notifications": "^4.2.7",
 		"@mantine/rte": "^4.2.7",
 		"@mantine/spotlight": "^4.2.7",
+		"@microsoft/signalr": "^6.0.7",
 		"@tauri-apps/api": "^1.0.2",
 		"dayjs": "^1.11.2",
 		"i18next": "^21.8.5",

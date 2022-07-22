@@ -1,4 +1,14 @@
 {
+	"account": {
+		"role": {
+			"admin": "Administrator",
+			"user": "User"
+		},
+		"status": {
+			"banned": "Banned",
+			"normal": "Normal"
+		}
+	},
 	"auth": {
 		"login": "Sign in",
 		"logout": "Sign out",
@@ -8,7 +18,7 @@
 		"add_comment": "Add Comment",
 		"add_topic": "Add Topic",
 		"update": "Update",
-		"vote": "Vote"
+		"vote": "Vote {count}"
 	},
 	"comment": {
 		"add_comment": "Add Comment",
@@ -29,6 +39,23 @@
 		"change_message": "Bạn đã thay đổi ngôn ngữ sang {language}",
 		"en": "English",
 		"vi": "Tiếng Việt"
+	},
+	"table": {
+		"accounts": {
+			"action": {
+				"ban": "Ban",
+				"edit": "Edit",
+				"unban": "Unban"
+			},
+			"header": {
+				"actions": "Action",
+				"banned": "Account Status",
+				"created": "Created At",
+				"id": "ID",
+				"role": "Role",
+				"username": "Username"
+			}
+		}
 	},
 	"topic": {
 		"back_to_parent": "Back to parent",

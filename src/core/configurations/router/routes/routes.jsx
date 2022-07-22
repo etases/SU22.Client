@@ -1,5 +1,6 @@
 import { NormalLayout } from '~/core/components'
 import { App, Category, Home, SignIn, SignUp, Statistics, Topic } from '~/pages'
+import { Accounts } from '~/pages/accounts/Accounts'
 
 export const routes = [
 	{
@@ -35,6 +36,10 @@ export const routes = [
 			{
 				path: 'statistics',
 				element: <Statistics />,
+			},
+			{
+				path: 'manage',
+				element: <Accounts />,
 			},
 		],
 	},

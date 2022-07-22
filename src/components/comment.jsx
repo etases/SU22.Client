@@ -6,7 +6,12 @@ import { useMutation } from 'react-query'
 import { fetchApi, useTranslation } from '~/hooks'
 import { useQueryClient } from '~/hooks/use-query/useQueryClient'
 
-export function useAddCommentModal(categoryId, parentId = null) {
+export function useAddCommentModal(
+	categoryId,
+	parentId = null,
+	method = 'POST',
+	currentId = null
+) {
 	const translator = useTranslation({
 		getTranslatorOnly: true,
 	})
@@ -22,7 +27,7 @@ export function useAddCommentModal(categoryId, parentId = null) {
 					? null
 					: translator({ key: 'comment.content_required' }),
 			keyword: (value) =>
-				value.length > 0
+				value.length > 0 || parentId
 					? null
 					: translator({ key: 'comment.keyword_required' }),
 		},
@@ -34,15 +39,13 @@ export function useAddCommentModal(categoryId, parentId = null) {
 		mutationKey: 'addTopic',
 		mutationFn: async (values) =>
 			fetchApi({
-				method: 'POST',
-				endpoint: '/comment',
+				method: method,
+				endpoint: `/comment${method === 'POST' ? '' : '/' + currentId}`,
 				body: { ...values, categoryId, ...(parentId ? { parentId } : {}) },
 			}),
 		onSuccess: (res) => {
-			console.log(res)
 			queryClient.invalidateQueries({
-				queryKey: ['search'],
-				exact: false,
+				queryKey: ['getTopicsFromCategory', { categoryId }],
 			})
 			queryClient.invalidateQueries(['comments', { topicId: parentId }])
 			showNotification({ message: 'created' })
@@ -66,13 +69,14 @@ export function useAddCommentModal(categoryId, parentId = null) {
 					label={translator({ key: 'comment.content' })}
 					{...form.getInputProps('content')}
 				/>
-
-				<TextInput
-					required
-					label={translator({ key: 'comment.keyword' })}
-					placeholder='abc,def,ghi'
-					{...form.getInputProps('keyword')}
-				/>
+				{parentId === null && (
+					<TextInput
+						required
+						label={translator({ key: 'comment.keyword' })}
+						placeholder='abc,def,ghi'
+						{...form.getInputProps('keyword')}
+					/>
+				)}
 
 				<Group
 					position='right'
@@ -89,14 +93,19 @@ export function useAddCommentModal(categoryId, parentId = null) {
 	}
 }
 
-export function useUpdateCommentModal(commentId) {
+export function useUpdateCommentModal({
+	commentId,
+	categoryId,
+	content,
+	keyword,
+}) {
 	const translator = useTranslation({
 		getTranslatorOnly: true,
 	})
 	const form = useForm({
 		initialValues: {
-			content: '',
-			keyword: '',
+			content,
+			keyword,
 		},
 
 		validate: {
@@ -111,6 +120,26 @@ export function useUpdateCommentModal(commentId) {
 		},
 	})
 
+	console.log({ content, keyword })
+
+	const queryClient = useQueryClient()
+
+	const { mutate } = useMutation({
+		mutationKey: 'addTopic',
+		mutationFn: async (values) =>
+			fetchApi({
+				method: 'PUT',
+				endpoint: `/comment/${commentId}`,
+				body: values,
+			}),
+		onSuccess: (res, vals) => {
+			queryClient.invalidateQueries({
+				queryKey: ['getTopicsFromCategory', { categoryId }],
+			})
+			showNotification({ message: 'updated ' + commentId })
+		},
+	})
+
 	const [opened, setOpened] = useState(false)
 
 	const component = (
@@ -118,7 +147,7 @@ export function useUpdateCommentModal(commentId) {
 			opened={opened}
 			onClose={() => setOpened(false)}
 			title={translator({ key: 'comment.update_content' })}>
-			<form onSubmit={form.onSubmit((values) => console.log(values))}>
+			<form onSubmit={form.onSubmit(mutate)}>
 				<Textarea
 					required
 					label={translator({ key: 'comment.content' })}

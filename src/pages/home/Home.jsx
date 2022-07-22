@@ -1,5 +1,23 @@
-import { Button, Grid, MultiSelect, Select } from '@mantine/core'
-import { useHome, useSearch, useSearchForm, useSearchSubmit } from '~/hooks'
+import {
+	Button,
+	Grid,
+	Input,
+	Modal,
+	MultiSelect,
+	Select,
+	Stack,
+} from '@mantine/core'
+import { showNotification } from '@mantine/notifications'
+import { useState } from 'react'
+import { useMutation } from 'react-query'
+import {
+	fetchApi,
+	useGlobalState,
+	useHome,
+	useSearch,
+	useSearchForm,
+	useSearchSubmit,
+} from '~/hooks'
 import { useQueryClient } from '~/hooks/use-query/useQueryClient'
 import { CategoryCard } from './CategoryCard'
 
@@ -45,6 +63,8 @@ export function Home() {
 
 	const _ = useHome()
 	const queryClient = useQueryClient()
+	const [modalOpen, setModalOpen] = useState(false)
+	const [topic, setTopic] = useState(null)
 
 	const categoryTopics = queryClient.getQueriesData({
 		queryKey: ['home', 'categories'],
@@ -64,12 +84,32 @@ export function Home() {
 		}
 	})
 
+	const [account] = useGlobalState({ store: 'account' })
+
+	const newTopicMutation = useMutation({
+		mutationKey: ['newTopic'],
+		mutationFn: async () =>
+			fetchApi({
+				method: 'POST',
+				endpoint: '/category',
+				body: topic,
+			}),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['home', 'categories'],
+			})
+			showNotification({
+				message: `Topic ${topic.name} created successfully`,
+			})
+		},
+	})
+
 	return (
 		<Grid>
 			<Col>
 				<form onSubmit={onSubmit(fetchData)}>
 					<Grid>
-						<Col span={4}>
+						<Col span={account?.info?.role?.id === 1 ? 3 : 4}>
 							<Select
 								searchable={true}
 								data={categoryQuery?.data || []}
@@ -83,7 +123,7 @@ export function Home() {
 								nothingFound={'No categories found'}
 							/>
 						</Col>
-						<Col span={6}>
+						<Col span={account?.info?.role?.id === 1 ? 5 : 6}>
 							<MultiSelect
 								data={keywordQuery?.data || []}
 								value={selectedKeyword}
@@ -104,6 +144,17 @@ export function Home() {
 								Search
 							</Button>
 						</Col>
+						{account?.info?.role?.id === 1 && (
+							<Col span={2}>
+								<Button
+									color={'green'}
+									fullWidth={true}
+									type={'button'}
+									onClick={() => setModalOpen(true)}>
+									Create
+								</Button>
+							</Col>
+						)}
 					</Grid>
 				</form>
 			</Col>
@@ -122,6 +173,27 @@ export function Home() {
 						</Col>
 					)
 				})}
+			<Modal
+				opened={modalOpen}
+				onClose={() => setModalOpen(false)}>
+				<Stack>
+					<Input
+						placeholder={'Enter Category name'}
+						required={true}
+						value={topic?.name}
+						onChange={(e) => setTopic({ ...topic, name: e.target.value })}
+					/>
+					<Input
+						placeholder={'Enter Category description'}
+						required={true}
+						value={topic?.description}
+						onChange={(e) =>
+							setTopic({ ...topic, description: e.target.value })
+						}
+					/>
+					<Button onClick={() => newTopicMutation.mutate()}>Create</Button>
+				</Stack>
+			</Modal>
 		</Grid>
 	)
 }

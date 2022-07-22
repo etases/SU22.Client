@@ -1,4 +1,14 @@
 {
+	"account": {
+		"role": {
+			"admin": "Quản trị viên",
+			"user": "Người dùng"
+		},
+		"status": {
+			"banned": "Bị cấm",
+			"normal": "Bình thường"
+		}
+	},
 	"auth": {
 		"login": "Đăng nhập",
 		"logout": "Đăng xuất",
@@ -8,7 +18,7 @@
 		"add_comment": "Thêm bình luận",
 		"add_topic": "Thêm chủ đề",
 		"update": "Cập nhật",
-		"vote": "Bình chọn"
+		"vote": "{count} Bình chọn"
 	},
 	"comment": {
 		"add_comment": "Thêm bình luận",
@@ -29,6 +39,18 @@
 		"change_message": "You have changed the language to {language}",
 		"en": "English",
 		"vi": "Tiếng Việt"
+	},
+	"table": {
+		"accounts": {
+			"header": {
+				"actions": "Thao tác",
+				"banned": "Trạng thái",
+				"created": "Ngày tạo",
+				"id": "ID",
+				"role": "Vai trò",
+				"username": "Tên tài khoản"
+			}
+		}
 	},
 	"topic": {
 		"back_to_parent": "Trở về chủ đề cha",

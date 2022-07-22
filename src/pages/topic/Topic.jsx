@@ -1,82 +1,64 @@
 import {
+	Badge,
 	Button,
+	Grid,
 	Group,
 	Paper,
+	ScrollArea,
 	Stack,
 	Text,
-	UnstyledButton,
 } from '@mantine/core'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { useQuery } from 'react-query'
+import { useParams } from 'react-router-dom'
 import { useAddCommentModal, useUpdateCommentModal } from '~/components/comment'
-import { useTranslation } from '~/hooks'
-import {
-	useGetComment,
-	useGetCommentsFromParent,
-} from '~/hooks/use-query/use-comment'
+import { fetchApi, useGlobalState, useTranslation } from '~/hooks'
+import { useGetComment } from '~/hooks/use-query/use-comment'
+import { useCommentVote } from '~/hooks/use-query/use-comment/useCommentVote'
 
-function Comment(commentProps) {
-	const saidMsgTranslation = useTranslation({
-		translationKey: 'topic.user_said',
-		keyParams: {
-			name: commentProps.account.username,
-		},
-	})
-
-	const [searchParams, setSearchParams] = useSearchParams()
-
-	return (
-		<UnstyledButton
-			component={Link}
-			to={'../' + commentProps.id}>
-			<Text
-				size='xs'
-				color='gray'>
-				{saidMsgTranslation.error || saidMsgTranslation.value}
-			</Text>
-			<Text lineClamp={2}>{commentProps.content}</Text>
-		</UnstyledButton>
-	)
-}
-
-function Comments(commentsProps) {
-	const { data, isLoading } = useGetCommentsFromParent(commentsProps)
-	if (isLoading) {
-		return <Text>Loading...</Text>
-	} else {
-		return (
-			<Stack
-				spacing='xs'
-				style={{ height: '100%', overflow: 'auto' }}>
-				{data.data.map((comment) => (
-					<Comment
-						key={comment.id}
-						{...comment}
-					/>
-				))}
-			</Stack>
-		)
-	}
-}
+const { Col } = Grid
 
 export function Topic() {
-	const { category, topic } = useParams()
-	const { data, isLoading } = useGetComment({
-		id: topic,
-	})
-
+	const { topic: topicId } = useParams()
+	const [account] = useGlobalState({ store: 'account' })
 	const translator = useTranslation({
 		getTranslatorOnly: true,
 	})
+	const topicResult = useGetComment({ id: topicId })
+	const { voteResult, voteMutate, voteStatus } = useCommentVote({ id: topicId })
+	const topic = topicResult?.data?.data
 	const { component: addComponent, setOpened: setOpenedAdd } =
-		useAddCommentModal(category, topic)
-	const { component: updateComponent, setOpened: setOpenedUpdate } =
-		useUpdateCommentModal(topic)
+		useAddCommentModal(topic?.category?.id, topic?.id)
+	console.log('current topic', topicId, topic)
+	const { component: editComponent, setOpened: setOpenedEdit } =
+		useUpdateCommentModal({
+			commentId: topic?.id,
+			content: topic?.content,
+			keyword: topic?.keyword,
+			categoryId: topic?.category?.id,
+		})
+	const commentQuery = useQuery({
+		enabled: !!topic?.id,
+		queryKey: ['comments', { topicId: topic?.id }],
+		queryFn: async () =>
+			fetchApi({
+				endpoint: '/comment/parent/' + topic?.id,
+			}),
+		select: (data) => {
+			const { data: commentsData } = data
+			return commentsData
+		},
+		onSuccess: (data) => {},
+		onError: (error) => {
+			console.log('comments err', error)
+		},
+	})
 	return (
 		<Stack
 			spacing={16}
 			style={{ height: '100%' }}>
 			{/* Header */}
-			{updateComponent}
+			{/* {updateComponent} */}
 			{/* Topic / Parent Comment */}
 			<Stack
 				spacing={10}
@@ -91,34 +73,49 @@ export function Topic() {
 						{translator({
 							key: 'topic.user_asked',
 							keyParams: {
-								name: isLoading ? '...' : data.account.username,
+								name: topic?.account?.username,
 							},
 						})}
 					</Text>
-					<Button variant={'subtle'}>
-						{translator({ key: 'topic.back_to_parent' })}
+					<Button
+						variant={'subtle'}
+						onClick={() => setOpenedEdit(true)}>
+						Update
 					</Button>
 				</Group>
 				<Paper p='lg'>
-					<Text>{isLoading ? 'Loading...' : data.content}</Text>
+					<Text>{topic?.content}</Text>
 				</Paper>
 				<Group
 					position={'apart'}
 					style={{ padding: '8px' }}>
-					<Text color='dimmed'>{isLoading ? 'Keyword' : data.keyword}</Text>
+					<Text color='dimmed'>
+						<Badge
+							color={'grape'}
+							mr={'sm'}>
+							#:
+						</Badge>
+						{topic?.keyword.split(',').map((key) => (
+							<Badge
+								key={topic.id + key}
+								mr={'sm'}>
+								{key.trim()}
+							</Badge>
+						))}
+					</Text>
 					<Group>
 						<Button
 							radius='xl'
 							size='xs'
-							uppercase>
-							{translator({ key: 'button.vote' })}
-						</Button>
-						<Button
-							radius='xl'
-							size='xs'
 							uppercase
-							onClick={() => setOpenedUpdate(true)}>
-							{translator({ key: 'button.update' })}
+							color={voteStatus?.data ? 'green' : 'orange'}
+							onClick={() => voteMutate?.mutate()}>
+							{translator({
+								key: 'button.vote',
+								keyParams: {
+									count: voteResult?.data?.toString(),
+								},
+							})}
 						</Button>
 					</Group>
 				</Group>
@@ -132,20 +129,49 @@ export function Topic() {
 					overflow: 'auto',
 					height: '100%',
 				}}>
-				{/* Add Comment */}
-				{!isLoading && (
-					<Button
-						fullWidth
-						style={{ display: 'block' }}
-						variant='outline'
-						onClick={() => setOpenedAdd(true)}>
-						{translator({ key: 'button.add_comment' })}
-					</Button>
-				)}
-				{/* Show Comments */}
-				{isLoading ? <Text>Loading...</Text> : <Comments id={data.id} />}
+				<ScrollArea
+					style={{ height: '100%' }}
+					scrollbarSize={5}>
+					{/* Add Comment */}
+					{account.token && (
+						<Button
+							fullWidth
+							style={{ display: 'block' }}
+							variant='outline'
+							onClick={() => setOpenedAdd(true)}>
+							{translator({ key: 'button.add_comment' })}
+						</Button>
+					)}
+					{commentQuery?.data?.map((cmt) => (
+						<Grid
+							key={cmt?.id}
+							gutter={'xs'}
+							space>
+							<Col span={12}>
+								<Grid>
+									<Col span={12}>
+										<Text weight={'bold'}>
+											{translator({
+												key: 'topic.user_said',
+												keyParams: {
+													name: cmt?.account?.username,
+												},
+											})}
+										</Text>
+									</Col>
+									<Col span={12}>{cmt?.content}</Col>
+								</Grid>
+							</Col>
+						</Grid>
+					))}
+				</ScrollArea>
 			</Stack>
 			{addComponent}
+			{editComponent}
 		</Stack>
 	)
+}
+
+Topic.propTypes = {
+	topic: PropTypes.any,
 }

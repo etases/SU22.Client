@@ -1,3 +1,4 @@
+export * from './accounts'
 export * from './app'
 export * from './category'
 export * from './home'

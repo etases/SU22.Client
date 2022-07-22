@@ -1,4 +1,5 @@
 export * from './functions'
+export * from './use-account-manage'
 export * from './use-home'
 export * from './use-search'
 export * from './use-sign-in'

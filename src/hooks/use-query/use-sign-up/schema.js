@@ -41,5 +41,5 @@ export const schema = {
 	[model.address]: (value) =>
 		value.length >= 10
 			? null
-			: 'Address must be at least 2 characters long',
+			: 'Address must be at least 10 characters long',
 }

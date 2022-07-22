@@ -1,25 +1,32 @@
+import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { fetchApi } from '~/hooks'
 
 export function useGetTopicsFromCategory(props) {
-	const { categoryId, page } = props
-	return useQuery({
-		queryKey: ['getTopicsFromCategory', { categoryId, page }],
+	const [query, setQuery] = useState({
+		categoryId: props.categoryId,
+		pageSize: 5,
+		pageNumber: 1,
+		keyword: props.keyword,
+	})
+	const result = useQuery({
+		queryKey: [
+			'getTopicsFromCategory',
+			{ categoryId: query.categoryId, pageNumber: query.pageNumber },
+		],
 		queryFn: async () =>
 			fetchApi({
 				method: 'GET',
-				baseUrl: {
-					protocol: 'https://',
-					host: 'localhost',
-					port: ':3000',
-				},
-				endpoint: '/comment/gettopicsfromcategory',
+				endpoint: '/comment/filtered',
 				query: {
-					id: categoryId,
-					pageNumber: page,
-					pageSize: 10,
+					categoryId: query.categoryId,
+					keyword: query.keyword,
+					pageNumber: query.pageNumber,
+					pageSize: query.pageSize,
 				},
 			}),
 		onSuccess: (data) => {},
 	})
+
+	return { topicsResult: result, query: { query, setQuery } }
 }

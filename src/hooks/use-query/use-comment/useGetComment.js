@@ -3,14 +3,14 @@ import { fetchApi } from '~/hooks'
 
 export function useGetComment(props) {
 	const { id } = props
-	return useQuery({
+	const result = useQuery({
 		queryKey: ['getComment', id],
 		queryFn: async ({ queryKey }) =>
 			fetchApi({
 				endpoint: '/comment/' + queryKey[1],
 			}),
-		onSuccess: (data) => {
-			console.log('useGetComment', data)
-		},
+		onSuccess: (data) => {},
+		refetchInterval: 5000,
 	})
+	return result
 }
